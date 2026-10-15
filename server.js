@@ -1,17 +1,3 @@
-const fs = require('fs');
-const path = require('path');
-
-// 自动初始化 enhanced_messages.json 防止唤醒报错
-const enhancedMessagesPath = path.join(__dirname, 'enhanced_messages.json');
-if (!fs.existsSync(enhancedMessagesPath)) {
-    try {
-        fs.writeFileSync(enhancedMessagesPath, JSON.stringify([], null, 2), 'utf-8');
-        console.log('[Init] 自动创建了空的 enhanced_messages.json');
-    } catch (err) {
-        console.error('[Init] 创建 enhanced_messages.json 失败:', err);
-    }
-}
-
 require("dotenv").config({ quiet: true });
 
 const Fastify = require("fastify");
