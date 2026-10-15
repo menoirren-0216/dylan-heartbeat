@@ -296,6 +296,9 @@ async function fetchWeatherContext() {
 }
 
 function loadTimelineMessages() {
+  console.log(`[Timeline Debug] 读取路径：${TIMELINE_PATH}`);
+  console.log(`[Timeline Debug] 文件存在：${fs.existsSync(TIMELINE_PATH)}`);
+
   if (!fs.existsSync(TIMELINE_PATH)) {
     console.log("未找到 enhanced_messages.json");
     return null;
