@@ -12,17 +12,6 @@ if (!fs.existsSync(enhancedMessagesPath)) {
     }
 }
 
-// 同理，顺便可以把另一个可能会缺失的记忆库文件也初始化一下（保险起见）
-const timestampsPath = path.join(__dirname, 'message_timestamps.json');
-if (!fs.existsSync(timestampsPath)) {
-    try {
-        fs.writeFileSync(timestampsPath, JSON.stringify({}, null, 2), 'utf-8');
-        console.log('[Init] 自动创建了空的 message_timestamps.json');
-    } catch (err) {
-        console.error('[Init] 创建 message_timestamps.json 失败:', err);
-    }
-}
-
 require("dotenv").config({ quiet: true });
 
 const Fastify = require("fastify");
