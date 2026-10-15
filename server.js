@@ -1,3 +1,28 @@
+const fs = require('fs');
+const path = require('path');
+
+// 自动初始化 enhanced_messages.json 防止唤醒报错
+const enhancedMessagesPath = path.join(__dirname, 'enhanced_messages.json');
+if (!fs.existsSync(enhancedMessagesPath)) {
+    try {
+        fs.writeFileSync(enhancedMessagesPath, JSON.stringify([], null, 2), 'utf-8');
+        console.log('[Init] 自动创建了空的 enhanced_messages.json');
+    } catch (err) {
+        console.error('[Init] 创建 enhanced_messages.json 失败:', err);
+    }
+}
+
+// 同理，顺便可以把另一个可能会缺失的记忆库文件也初始化一下（保险起见）
+const timestampsPath = path.join(__dirname, 'message_timestamps.json');
+if (!fs.existsSync(timestampsPath)) {
+    try {
+        fs.writeFileSync(timestampsPath, JSON.stringify({}, null, 2), 'utf-8');
+        console.log('[Init] 自动创建了空的 message_timestamps.json');
+    } catch (err) {
+        console.error('[Init] 创建 message_timestamps.json 失败:', err);
+    }
+}
+
 require("dotenv").config({ quiet: true });
 
 const Fastify = require("fastify");
