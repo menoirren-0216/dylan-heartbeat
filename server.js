@@ -226,6 +226,7 @@ function saveTimeline(messages) {
   const trimmed = nonSP.slice(-49);
   const final = sp ? [sp, ...trimmed] : trimmed;
   writeJsonAtomicSync(TIMELINE_FILE, final);
+  console.log(`[Timeline] 已保存 ${final.length} 条消息，文件路径：${TIMELINE_FILE}`);
 }
 
 // ========================
