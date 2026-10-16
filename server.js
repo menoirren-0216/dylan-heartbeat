@@ -739,7 +739,30 @@ app.post("/v1/chat/completions", async (req, reply) => {
     }
     reply.raw.end();
   } catch (err) {
-    console.error(err);
+    function describeError(error, depth = 0) {
+      if (!error || depth > 5) return null;
+
+      const result = {
+        name: error.name,
+        message: error.message,
+        code: error.code,
+        cause: describeError(error.cause, depth + 1)
+      };
+
+      if (Array.isArray(error.errors)) {
+        result.errors = error.errors.map(item =>
+          describeError(item, depth + 1)
+        );
+      }
+
+      return result;
+    }
+
+    console.error(
+      "[普通聊天请求失败]",
+      JSON.stringify(describeError(err), null, 2)
+    );
+
     reply.code(500).send({ error: err.message });
   }
 });
