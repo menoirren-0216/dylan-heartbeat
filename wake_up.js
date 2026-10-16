@@ -433,26 +433,19 @@ async function runWakeUp() {
   .filter(msg => msg.role !== "system")
   .filter(msg => {
     const c = normalizeContentToText(msg.content);
-    return (
-      !c.includes("<memories>") &&
-      !c.includes("记忆库使用策略") &&
-      !/^\s*[（(]\s*\d{4}[-/]\d{1,2}[-/]\d{1,2}.*(?:刚刚给用户发了|自动唤醒：本次未发送推送)/.test(c)
-    );
+    return !c.includes("<memories>") && !c.includes("记忆库使用策略");
   })
   .map(msg => {
     const userDisplay = process.env.USER_DISPLAY_NAME || "用户";
     const aiDisplay = process.env.AI_DISPLAY_NAME || "AI";
-    const role = msg.role === "user" ? userDisplay : "AI";
+    const role = msg.role === "user" ? userDisplay : aiDisplay;
     let content = normalizeContentToText(msg.content);
-
     if (content.includes("## Memories")) {
       content = content.split("## Memories")[0];
     }
-
     return `[${role}] ${content}`;
   })
   .join("\n\n");
-
   const baseSystemPrompt = cleanMessages.find(msg => msg.role === "system");
   const cleanSP = baseSystemPrompt 
     ? normalizeContentToText(baseSystemPrompt.content).split("## Memories")[0].trim()
